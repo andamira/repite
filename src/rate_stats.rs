@@ -3,10 +3,9 @@
 //!
 //
 
-use core::cmp;
 use crate::{Duration, Rate};
-use log::*;
-use arraydeque::{ArrayDeque, Wrapping}; // MAYBE recreate
+use arraydeque::{ArrayDeque, Wrapping};
+use core::cmp;
 
 // /// The max size of the ring buffer that stores measures.
 // const RATE_RING_LEN: usize = 1024;
@@ -62,7 +61,8 @@ impl RateStats {
     /// Adds a new `duration` to the stats.
     #[inline]
     pub fn add(&mut self, duration: Duration) {
-        self.avg_ring.push_back(cmp::max(0_i128, duration.whole_nanoseconds()) as u64);
+        self.avg_ring
+            .push_back(cmp::max(0_i128, duration.whole_nanoseconds()) as u64);
     }
     /// Adds a new `nanoseconds` value to the stats.
     #[inline]
@@ -73,7 +73,6 @@ impl RateStats {
     /// Updates the statistics for each time window that aligns with
     /// the provided tick count.
     pub fn update(&mut self, tick_count: u64) {
-
         // IMPROVE IDEA we may have a little performance gain
         // if we could reuse %16 for %128 and that for %1024
 
@@ -130,7 +129,7 @@ impl RateStats {
     //
     // - MAYBE print how much time can base_ticks continue at current rate
     //
-    // - IMPROVE 
+    // - IMPROVE
     pub fn log(&self, name: &str, rate: Option<&Rate>) {
         // average tps for each window
         let avg_16 = 1. / (self.avg_16 * NS_TO_S);
@@ -139,7 +138,7 @@ impl RateStats {
         // minimum tps for each window
         let min_16 = 1. / (self.max_ns_16 as f64 * NS_TO_S);
         let min_128 = 1. / (self.max_ns_128 as f64 * NS_TO_S);
-        let min_1024= 1. / (self.max_ns_1024 as f64 * NS_TO_S);
+        let min_1024 = 1. / (self.max_ns_1024 as f64 * NS_TO_S);
 
         // show % against rate's tps if avaiable
         if let Some(rate) = rate {
@@ -155,11 +154,13 @@ impl RateStats {
             let pctm_128 = min_128 / tps * 100.;
             let pctm_1024 = min_1024 / tps * 100.;
 
-        trace!["[window]avg(%)|min(%) rate tps:{tps:.2} dpt:{d} \"{name}\":
+            log::trace![
+                "[window]avg(%)|min(%) rate tps:{tps:.2} dpt:{d} \"{name}\":
 [16]{avg_16:.2}({pcta_16:.1}%)|{min_16:.2}({pctm_16:.1}%) \
 [128]{avg_128:.2}({pcta_128:.1}%)|{min_128:.2}({pctm_128:.1}%) \
 [1024]{avg_1024:.2}({pcta_1024:.1}%)|{min_1024:.2}({pctm_1024:.1}%)
-"];
+"
+            ];
         // or don't
         } else {
             // % deviations from average for minimums
@@ -167,26 +168,26 @@ impl RateStats {
             let pctm_128 = min_128 / avg_128 * 100.;
             let pctm_1024 = min_1024 / avg_1024 * 100.;
 
-        trace!["[window]avg|min rate \"{name}\":
+            log::trace![
+                "[window]avg|min rate \"{name}\":
 [16]{avg_16:.2}|{min_16:.2}({pctm_16:.1}%) \
 [128]{avg_128:.2}|{min_128:.2}({pctm_128:.1}%) \
 [1024]{avg_1024:.2}|{min_1024:.2}({pctm_1024:.1}%)
-"];
-
+"
+            ];
         }
-//         // no percentages
-//         } else {
-//             // % deviations from base for minimums
-//             let pctm_16 = min_16 / tps * 100.;
-//             let pctm_128 = min_128 / tps * 100.;
-//             let pctm_1024 = min_1024 / tps * 100.;
-//
-//         trace!["[window]avg|min rate dpt:{d} \"{name}\":
-// [16]{avg_16:.2}|{min_16:.2} \
-// [128]{avg_128:.2}|{min_128:.2} \
-// [1024]{avg_1024:.2}|{min_1024:.2}
-// "];
-//         }
-
+        //         // no percentages
+        //         } else {
+        //             // % deviations from base for minimums
+        //             let pctm_16 = min_16 / tps * 100.;
+        //             let pctm_128 = min_128 / tps * 100.;
+        //             let pctm_1024 = min_1024 / tps * 100.;
+        //
+        //         log::trace!["[window]avg|min rate dpt:{d} \"{name}\":
+        // [16]{avg_16:.2}|{min_16:.2} \
+        // [128]{avg_128:.2}|{min_128:.2} \
+        // [1024]{avg_1024:.2}|{min_1024:.2}
+        // "];
+        //         }
     }
 }

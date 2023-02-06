@@ -20,7 +20,7 @@ pub enum Error {
 
 /// allows converting into `Error` from other error types.
 mod core_impls {
-    use super::{Error, EncodeError};
+    use super::{EncodeError, Error};
 
     impl From<EncodeError> for Error {
         fn from(err: EncodeError) -> Self {

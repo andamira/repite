@@ -17,7 +17,7 @@
 pub mod error;
 
 mod looper;
-pub use looper::{Looper, LoopStatus};
+pub use looper::{LoopStatus, Looper};
 
 mod rate;
 pub use rate::Rate;
