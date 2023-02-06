@@ -15,8 +15,8 @@ include = [
 	"/LICENSE-*",
 	"/README.md",
 ]
-categories = [""]
-keywords = ["loop", "rate"]
+categories = []
+keywords = ["loop", "rate", "fps"]
 publish = true
 
 [dependencies]
