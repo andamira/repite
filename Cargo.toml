@@ -1,0 +1,38 @@
+[package]
+name = "repite"
+description = "Manage loops and rates."
+version = "0.0.1"
+edition = "2021"
+resolver = "2"
+rust-version = "1.65.0"
+authors = ["José Luis Cruz <joseluis@andamira.net>"]
+repository = "https://github.com/andamira/repite"
+documentation = "https://docs.rs/repite"
+license = "MIT OR Apache-2.0"
+include = [
+	"/src/**/*.rs",
+	"/Cargo.toml",
+	"/LICENSE-*",
+	"/README.md",
+]
+categories = [""]
+keywords = ["loop", "rate"]
+publish = true
+
+[dependencies]
+espera = { version = "0.0.1", default-features = false }
+log = "0.4.17"
+
+sixbit = "0.5.0"
+arraydeque = "0.4.5"
+ahash = "0.8.2"
+
+[features]
+default = ["std", "safe"]
+std = ["espera/std"]
+safe = ["espera/safe"]
+
+[dev-dependencies]
+
+[badges]
+maintenance = { status = "experimental" }
