@@ -325,6 +325,7 @@ impl Looper {
     /// Logs the stats of a given rate.
     #[inline]
     #[cfg(feature = "std")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "std")))]
     pub fn log_rate(&self, name: &str) {
         if let Ok(key) = name.chars().encode_sixbit::<u128>() {
             if let Some(stats) = self.stats.get(&key) {
@@ -338,6 +339,7 @@ impl Looper {
     /// Logs the stats of all rates.
     #[inline]
     #[cfg(feature = "std")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "std")))]
     pub fn log_all_rates(&self) {
         self.log_root_rate();
         for (key, _) in self.rates.iter() {
@@ -364,6 +366,7 @@ impl Looper {
     // IMPROVE: check minimum resolution?
     // IMPROVE: make it work with no_std
     #[cfg(feature = "std")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "std")))]
     pub fn sleep(&mut self, duration: Duration) {
         if let LoopStatus::Active = self.status {
             self.status = LoopStatus::Asleep;
