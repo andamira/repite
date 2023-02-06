@@ -434,10 +434,9 @@ impl Rate {
     // }
 }
 
-#[cfg(feature = "std")]
-mod impl_std {
+mod core_impl {
     use super::Rate;
-    use std::fmt;
+    use core::fmt;
 
     impl fmt::Display for Rate {
         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

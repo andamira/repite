@@ -18,9 +18,17 @@ pub enum Error {
     RateName(EncodeError),
 }
 
-/// allows converting into `Error` from other error types.
 mod core_impls {
     use super::{EncodeError, Error};
+    use core::fmt::{self, Debug};
+
+    impl fmt::Display for Error {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            match self {
+                Error::RateName(r) => Debug::fmt(r, f),
+            }
+        }
+    }
 
     impl From<EncodeError> for Error {
         fn from(err: EncodeError) -> Self {
@@ -29,21 +37,10 @@ mod core_impls {
     }
 }
 
-/// impl `Display` & `Error` on all types.
 #[cfg(feature = "std")]
 mod std_impls {
     use super::Error;
-    use std::{
-        error::Error as StdError,
-        fmt::{self, Debug},
-    };
+    use std::error::Error as StdError;
 
     impl StdError for Error {}
-    impl fmt::Display for Error {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            match self {
-                Error::RateName(r) => Debug::fmt(r, f),
-            }
-        }
-    }
 }
