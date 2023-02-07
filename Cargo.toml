@@ -20,7 +20,7 @@ keywords = ["loop", "rate", "fps"]
 publish = true
 
 [dependencies]
-espera = { version = "0.0.1", default-features = false }
+espera = { version = "0.0.3", default-features = false }
 log = "0.4.17"
 
 sixbit = "0.5.0"
@@ -31,6 +31,7 @@ ahash = "0.8.2"
 default = ["std", "safe"]
 std = ["espera/std"]
 safe = ["espera/safe"]
+nightly = []
 
 [dev-dependencies]
 
@@ -39,4 +40,3 @@ maintenance = { status = "experimental" }
 
 [package.metadata.docs.rs]
 all-features = true
-rustdoc-args = ["--cfg", "docsrs"]
